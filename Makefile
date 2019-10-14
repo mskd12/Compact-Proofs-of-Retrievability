@@ -8,19 +8,19 @@ TARGETS= cpor-gen-keys cpor-tag-file cpor-gen-challenge cpor-calc-response cpor-
 all: $(TARGETS)
 
 cpor-gen-keys: cpor-gen-keys.o
-	$(CC) $(CLIBS) $< -o $@
+	$(CC) $< -o $@ $(CLIBS)
 
 cpor-tag-file: cpor-tag-file.o
-	$(CC) $(CLIBS) $< -o $@
+	$(CC) $< -o $@ $(CLIBS)
 
 cpor-gen-challenge: cpor-gen-challenge.o
-	$(CC) $(CLIBS) $< -o $@
+	$(CC) $< -o $@ $(CLIBS)
 
 cpor-calc-response: cpor-calc-response.o
-	$(CC) $(CLIBS) $< -o $@
+	$(CC) $< -o $@ $(CLIBS)
 
 cpor-verify-response: cpor-verify-response.o
-	$(CC) $(CLIBS) $< -o $@
+	$(CC) $< -o $@ $(CLIBS)
 
 %.o: %.c cpor.h
 	$(CC) $(CFLAGS) -c $< -o $@
