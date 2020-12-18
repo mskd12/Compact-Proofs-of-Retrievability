@@ -201,20 +201,18 @@ int verify_response(const char *file_name)
     assert(ret);
     BN_CTX *ctx = BN_CTX_new();
     assert(ctx);
-    BN_CTX_init(ctx);
 
     // the first term.
     BIGNUM *f_prf = BN_new();
     assert(f_prf);
     unsigned char mac[CPOR_MAC_OUTPUT_BYTES];
-    HMAC_CTX mac_ctx;
-    HMAC_CTX_init(&mac_ctx);
+    HMAC_CTX* mac_ctx = HMAC_CTX_new();
     for (i = 0; i < l; i++) {
         int block_idx = idx[i];
-        HMAC_Init(&mac_ctx, kprf, sizeof(kprf), EVP_sha1());
-        HMAC_Update(&mac_ctx, (unsigned char *)&block_idx, sizeof(block_idx));
+        HMAC_Init_ex(mac_ctx, kprf, sizeof(kprf), EVP_sha1(), NULL);
+        HMAC_Update(mac_ctx, (unsigned char *)&block_idx, sizeof(block_idx));
         unsigned usize;
-        HMAC_Final(&mac_ctx, mac, &usize);
+        HMAC_Final(mac_ctx, mac, &usize);
         assert(usize == CPOR_MAC_OUTPUT_BYTES);
         f_prf = BN_bin2bn(mac, usize, f_prf);
         assert(f_prf);
@@ -223,7 +221,7 @@ int verify_response(const char *file_name)
         ret = BN_mod_add(sigma_verify, sigma_verify, f_prf, p, ctx);
         assert(ret);
     }
-    HMAC_CTX_cleanup(&mac_ctx);
+    HMAC_CTX_free(mac_ctx);
     BN_free(f_prf);
 
     // the second term.

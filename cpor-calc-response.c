@@ -131,7 +131,6 @@ BIGNUM *calc_sigma(const char *file_name)
     assert(sigma);
     BN_CTX *ctx = BN_CTX_new();
     assert(ctx);
-    BN_CTX_init(ctx);
 
     ret = BN_zero(sigma);
     assert(ret);
@@ -176,7 +175,6 @@ int generate_response_file(const char *file_name)
 
     BN_CTX *ctx = BN_CTX_new();
     assert(ctx);
-    BN_CTX_init(ctx);
     BIGNUM *miu_j = BN_new();
     assert(miu_j);
 

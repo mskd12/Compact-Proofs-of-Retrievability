@@ -1,6 +1,6 @@
 
 CC = gcc
-CLIBS = -lcrypto
+CLIBS = -lcrypto -L/usr/src/openssl-1.1.1i
 CFLAGS = -Wall -O3
 SOURCES= cpor-gen-keys.c cpor-tag-file.c cpor-gen-challenge.c cpor-calc-response.c cpor-verify-response.c
 TARGETS= cpor-gen-keys cpor-tag-file cpor-gen-challenge cpor-calc-response cpor-verify-response

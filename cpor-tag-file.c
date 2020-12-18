@@ -133,19 +133,17 @@ BIGNUM *process_one_block(int block_idx, const unsigned char *curr, int block_si
     assert(sigma_alpha_mij);
     BN_CTX *ctx = BN_CTX_new();
     assert(ctx);
-    BN_CTX_init(ctx);
-    HMAC_CTX mac_ctx;
-    HMAC_CTX_init(&mac_ctx);
+    HMAC_CTX* mac_ctx = HMAC_CTX_new();
 
     // calc the first term.
-    HMAC_Init(&mac_ctx, kprf, sizeof(kprf), EVP_sha1());
-    HMAC_Update(&mac_ctx, (unsigned char *)&block_idx, sizeof(block_idx));
+    HMAC_Init_ex(mac_ctx, kprf, sizeof(kprf), EVP_sha1(), NULL);
+    HMAC_Update(mac_ctx, (unsigned char *)&block_idx, sizeof(block_idx));
     unsigned usize;
-    HMAC_Final(&mac_ctx, mac, &usize);
+    HMAC_Final(mac_ctx, mac, &usize);
     assert(usize == CPOR_MAC_OUTPUT_BYTES);
     f_prf = BN_bin2bn(mac, usize, f_prf);
     assert(f_prf);
-    HMAC_CTX_cleanup(&mac_ctx);
+    HMAC_CTX_free(mac_ctx);
 
     // calc the second term.
     ret = BN_zero(sigma_alpha_mij);

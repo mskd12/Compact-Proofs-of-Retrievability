@@ -1,0 +1,8 @@
+
+*.o
+cpor-gen-keys
+cpor-tag-file
+cpor-gen-challenge
+cpor-calc-response
+cpor-verify-response
+test-file.*
